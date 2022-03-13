@@ -1,0 +1,28 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "jest": true
+  },
+  "extends": ["eslint:recommended", "prettier", "plugin:@next/next/recommended", "next"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "rules": {
+    "indent": ["error", 2],
+    "react/jsx-uses-vars": 1,
+    "import/no-anonymous-default-export": "off",
+    "no-unused-vars": "off",
+    "react/display-name": "off",
+    "react/no-deprecated": 1,
+    "react/jsx-key": 1,
+    "react/jsx-uses-react": 1,
+    "quotes": ["error", "single"],
+    "semi": ["error", "never"]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "locales": ["en", "pt-BR"],
+  "defaultLocale": "pt-BR",
+  "localesPath": "src/locales",
+  "pages": {
+    "*": ["translation"]
+  }
+}

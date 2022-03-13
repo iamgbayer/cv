@@ -1,0 +1,150 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Availability {
+  freelance: Boolean!
+  lookingForWork: Boolean!
+  disability: Boolean!
+  remoteOnly: Boolean!
+}
+
+type Experience {
+  id: String!
+  from: String!
+  to: String!
+  title: String!
+  url: String!
+  company: String!
+  location: String!
+  description: String!
+}
+
+type General {
+  username: String!
+  displayName: String!
+  role: String!
+  location: String!
+  website: String!
+  about: String!
+  photoUrl: String!
+}
+
+type Project {
+  title: String!
+  year: String!
+  url: String!
+  description: String!
+}
+
+type Contact {
+  type: String!
+  value: String!
+}
+
+type Language {
+  language: String!
+  proficiency: String!
+}
+
+type Resume {
+  id: String!
+  views: Float!
+  skills: [String]!
+  createdAt: DateTime!
+  availability: Availability!
+  experiences: [Experience]!
+  general: General!
+  projects: [Project]!
+  contacts: [Contact]!
+  languages: [Language]!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type User {
+  username: String!
+  displayName: String!
+  email: String!
+  id: String!
+  photoUrl: String!
+}
+
+input AvailabilityInput {
+  freelance: Boolean!
+  lookingForWork: Boolean!
+  disability: Boolean!
+  remoteOnly: Boolean!
+}
+
+input ExperienceInput {
+  id: String!
+  from: String!
+  to: String!
+  title: String!
+  url: String!
+  company: String!
+  location: String!
+  description: String!
+}
+
+input GeneralInput {
+  username: String!
+  displayName: String!
+  role: String!
+  location: String!
+  website: String!
+  about: String!
+  photoUrl: String!
+}
+
+input ProjectInput {
+  title: String!
+  year: String!
+  url: String!
+  description: String!
+}
+
+input ContactInput {
+  type: String!
+  value: String!
+}
+
+input LanguageInput {
+  language: String!
+  proficiency: String!
+}
+
+type Query {
+  findUser: User!
+  findAll: [Resume!]!
+  findResume(username: String!): Resume!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  update(updateResumeInput: UpdateResumeInput): Resume!
+}
+
+input CreateUserInput {
+  username: String!
+  displayName: String!
+  email: String!
+  photoUrl: String!
+}
+
+input UpdateResumeInput {
+  id: String!
+  views: Float
+  skills: [String!]
+  createdAt: DateTime
+  availability: AvailabilityInput
+  experiences: [ExperienceInput!]
+  general: GeneralInput
+  projects: [ProjectInput!]
+  contacts: [ContactInput!]
+  languages: [LanguageInput!]
+}
