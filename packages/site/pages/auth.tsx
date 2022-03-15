@@ -1,4 +1,4 @@
-import { Auth } from 'presentation/pages/index/components/sign-up'
+import { Auth } from 'presentation/pages/auth/auth'
 
 export default function () {
   return <Auth />
