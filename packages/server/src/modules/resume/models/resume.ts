@@ -107,6 +107,9 @@ export class Project implements ProjectEntity {
 @InputType('ContactInput')
 export class Contact implements ContactEntity {
   @Field()
+  id: string;
+
+  @Field()
   type: string;
 
   @Field()
@@ -116,6 +119,9 @@ export class Contact implements ContactEntity {
 @ObjectType()
 @InputType('LanguageInput')
 export class Language implements LanguageEntity {
+  @Field()
+  id: string;
+
   @Field()
   language: string;
 

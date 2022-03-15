@@ -3,11 +3,12 @@ import {
   Container,
   Dialog,
   Divider,
+  Drawer,
   Fab,
+  Link,
   MenuItem,
   MenuList,
   Stack,
-  useMediaQuery,
   useTheme
 } from '@mui/material'
 import { container } from 'container/server'
@@ -22,10 +23,21 @@ import { dehydrate, QueryClient } from 'react-query'
 import EditIcon from '@mui/icons-material/Edit'
 import DragHandleIcon from '@mui/icons-material/DragHandle'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import { WorkExperiences } from 'presentation/pages/username/contents/work-experiences'
+import { WorkExperiences } from 'presentation/pages/username/contents/work-experiences/work-experiences'
 import dayjs from 'dayjs'
 import { isEmpty } from 'lodash'
 import { useIsMobile } from 'presentation/hooks/use-is-mobile'
+import MenuIcon from '@mui/icons-material/Menu'
+import {
+  Contacts,
+  getName
+} from 'presentation/pages/username/contents/contacts/contacts'
+import { Languages } from 'presentation/pages/username/contents/languages/languages'
+import { ListLanguages } from 'presentation/pages/username/contents/languages/list-languages'
+import { Skills } from 'presentation/pages/username/contents/skills/skills'
+import { ListSkills } from 'presentation/pages/username/contents/skills/list-skills'
+import { General } from 'presentation/pages/username/contents/general/General'
+import { ListContacts } from 'presentation/pages/username/contents/contacts/list-contacts'
 
 const reorder = (list, startIndex, endIndex): any[] => {
   const result = Array.from(list)
@@ -39,7 +51,8 @@ enum Content {
   GENERAL = 'GENERAL',
   LANGUAGES = 'LANGUAGES',
   WORK_EXPERIENCES = 'WORK_EXPERIENCES',
-  SKILLS = 'SKILLS'
+  SKILLS = 'SKILLS',
+  CONTACTS = 'CONTACTS'
 }
 
 export enum Render {
@@ -54,6 +67,7 @@ export default function ({ pageProps }) {
   const [dialog, setDialog] = useState(false)
   const [content, setContent] = useState(Content.GENERAL)
   const [render, setRender] = useState(Render.MENU)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const isMobile = useIsMobile()
   const [list, setList] = useState([
     {
@@ -67,6 +81,10 @@ export default function ({ pageProps }) {
     {
       title: 'Skills',
       id: Content.SKILLS
+    },
+    {
+      title: 'Contacts',
+      id: Content.CONTACTS
     }
   ])
 
@@ -85,29 +103,57 @@ export default function ({ pageProps }) {
   }
 
   const contents = {
-    [Content.GENERAL]: <>general</>,
-    [Content.LANGUAGES]: <>languages</>,
+    [Content.GENERAL]: <General data={data} setRender={setRender} />,
+    [Content.LANGUAGES]: (
+      <Languages data={data} render={render} setRender={setRender} />
+    ),
     [Content.WORK_EXPERIENCES]: (
       <WorkExperiences data={data} render={render} setRender={setRender} />
     ),
-    [Content.SKILLS]: <>skills</>
+    [Content.SKILLS]: (
+      <Skills data={data} render={render} setRender={setRender} />
+    ),
+    [Content.CONTACTS]: (
+      <Contacts data={data} render={render} setRender={setRender} />
+    )
   }
 
   const canRenderWorkExperiences = !isEmpty(data.experiences)
+  const canRenderContacts = !isEmpty(data.contacts)
+  const canRenderSkills = !isEmpty(data.skills)
+  const canRenderLanguages = !isEmpty(data.languages)
 
-  const canRender = (by) => {
-    return isMobile ? render === by : true
-  }
+  const canRender = (by) => (isMobile ? render === by : true)
 
   return (
     <>
+      <Drawer open={isMenuOpen} onClose={() => setIsMenuOpen(false)}>
+        <Stack
+          padding={3}
+          paddingBottom={15}
+          justifyContent="flex-end"
+          height="100%"
+          width={230}
+        >
+          <Stack marginBottom={5}>
+            <Avatar
+              alt={data.general.displayName}
+              src={data.general.photoUrl}
+            />
+          </Stack>
+
+          <Link color="text.secondary">Settings</Link>
+          <Link color="text.secondary">Logout</Link>
+        </Stack>
+      </Drawer>
+
       <Dialog
         open={dialog}
         onClose={() => setDialog(false)}
         maxWidth="md"
         fullWidth
       >
-        <Stack flexDirection="row">
+        <Stack flexDirection="row" minHeight={550}>
           {canRender(Render.MENU) && (
             <Stack padding={3} width={isMobile ? '100%' : 265}>
               <Text>Profile</Text>
@@ -181,17 +227,34 @@ export default function ({ pageProps }) {
       <Fab
         color="primary"
         sx={{
-          position: 'absolute',
-          left: 25,
+          position: 'fixed',
+          left: 90,
           bottom: 25,
           boxShadow: 'none',
-          fontSize: 14
+          '.MuiTypography-root': {
+            fontSize: 14,
+            textTransform: 'none'
+          }
         }}
         onClick={() => setDialog(true)}
         variant="extended"
       >
-        <EditIcon />
-        <Text>Edit profile</Text>
+        <EditIcon fontSize="small" />
+        <Text marginLeft={1}>Edit profile</Text>
+      </Fab>
+
+      <Fab
+        size="medium"
+        color="primary"
+        sx={{
+          position: 'fixed',
+          left: 25,
+          bottom: 25,
+          boxShadow: 'none'
+        }}
+        onClick={() => setIsMenuOpen(true)}
+      >
+        <MenuIcon fontSize="small" />
       </Fab>
 
       <Container maxWidth="md">
@@ -205,8 +268,11 @@ export default function ({ pageProps }) {
 
             <Stack marginLeft={2}>
               <Text variant="h3">{data.general.displayName}</Text>
-              <Text variant="body1">
+              <Text variant="body1" color="text.secondary">
                 {data.general.role} in {data.general.location}
+              </Text>
+              <Text fontSize={14} color="text.secondary">
+                {window.location.hostname}/{username}
               </Text>
             </Stack>
           </Stack>
@@ -215,7 +281,9 @@ export default function ({ pageProps }) {
             <Text variant="h5" marginBottom={1}>
               About
             </Text>
-            <Text variant="body2">{data.general.about}</Text>
+            <Text variant="body2" color="text.secondary">
+              {data.general.about}
+            </Text>
           </Stack>
 
           {canRenderWorkExperiences && (
@@ -240,12 +308,44 @@ export default function ({ pageProps }) {
                         <Text variant="body2">
                           {experience.title} at {experience.company}
                         </Text>
-                        <Text variant="body2">{experience.location}</Text>
+                        <Text variant="body2" color="text.secondary">
+                          {experience.location}
+                        </Text>
                       </Stack>
                     </Stack>
                   </>
                 )
               })}
+            </Stack>
+          )}
+
+          {canRenderContacts && (
+            <Stack>
+              <Text variant="h5" marginBottom={1}>
+                Contacts
+              </Text>
+
+              <ListContacts data={data} />
+            </Stack>
+          )}
+
+          {canRenderLanguages && (
+            <Stack>
+              <Text variant="h5" marginBottom={1}>
+                Languages
+              </Text>
+
+              <ListLanguages hasControls={false} data={data} />
+            </Stack>
+          )}
+
+          {canRenderSkills && (
+            <Stack>
+              <Text variant="h5" marginBottom={1}>
+                Skills
+              </Text>
+
+              <ListSkills data={data} />
             </Stack>
           )}
         </Stack>
@@ -258,9 +358,17 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const queryClient = new QueryClient()
   const username = query?.username as string
 
-  await queryClient.fetchQuery([QUERIES.Resume], () =>
-    new GetResumeRepository(container.get(GraphQLHttpClient)).execute(username)
-  )
+  try {
+    await queryClient.fetchQuery([QUERIES.Resume], () =>
+      new GetResumeRepository(container.get(GraphQLHttpClient)).execute(
+        username
+      )
+    )
+  } catch (error) {
+    return {
+      notFound: true
+    }
+  }
 
   return {
     props: {

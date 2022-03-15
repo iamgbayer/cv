@@ -57,8 +57,6 @@ export class ResumeService {
       return null;
     }
 
-    console.log(snapshot.docs[0].data());
-
     return snapshot.docs[0].data() as ResumeEntity;
   }
 

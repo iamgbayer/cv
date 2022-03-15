@@ -30,11 +30,13 @@ export interface AvailabilityEntity {
 }
 
 export interface ContactEntity {
+  id: string
   type: string
   value: string
 }
 
 export interface LanguageEntity {
+  id: string
   language: string
   proficiency: string
 }

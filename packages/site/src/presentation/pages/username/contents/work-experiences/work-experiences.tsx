@@ -8,21 +8,19 @@ import {
 } from '@mui/material'
 import { useFormik } from 'formik'
 import { Box, Button, Text } from 'presentation/components'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { isEmpty } from 'lodash'
 import Adapter from '@mui/lab/AdapterDayjs'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import { DatePicker } from '@mui/lab'
 import dayjs from 'dayjs'
 import { useUpdateResume } from 'presentation/hooks/use-update-resume'
-import { merge } from 'lodash'
 import { ExperienceEntity, ResumeEntity } from '@cv/core'
-import { last } from 'ramda'
 import { arrayMoveImmutable } from 'array-move'
 import { v4 } from 'uuid'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import { useIsMobile } from 'presentation/hooks/use-is-mobile'
-import { Render } from '../../../../../pages/[username]'
+import { Render } from '../../../../../../pages/[username]'
 
 type Props = {
   data: ResumeEntity
@@ -74,7 +72,8 @@ export const WorkExperiences = ({ data, render, setRender }: Props) => {
   })
 
   const canRenderData = is === Is.NONE && !isEmpty(data.experiences)
-  const canRenderEmpty = isEmpty(data) && is === Is.NONE
+  const canRenderEmpty = isEmpty(data.experiences) && is === Is.NONE
+  const isEditing = [Is.ADDIND, Is.EDITING].includes(is)
 
   const onEdit = (value: ExperienceEntity) => {
     formik.setValues(value)
@@ -124,10 +123,10 @@ export const WorkExperiences = ({ data, render, setRender }: Props) => {
         )}
       </Stack>
 
-      {[Is.ADDIND, Is.EDITING].includes(is) && (
+      {isEditing && (
         <>
           <Grid container>
-            <Grid item sm={6}>
+            <Grid item sm={6} paddingRight={1} marginBottom={2}>
               <LocalizationProvider dateAdapter={Adapter}>
                 <DatePicker
                   label="From*"
@@ -145,7 +144,7 @@ export const WorkExperiences = ({ data, render, setRender }: Props) => {
               </LocalizationProvider>
             </Grid>
 
-            <Grid item sm={6}>
+            <Grid item sm={6} paddingLeft={1} marginBottom={2}>
               <LocalizationProvider dateAdapter={Adapter}>
                 <DatePicker
                   label="To*"
@@ -163,7 +162,7 @@ export const WorkExperiences = ({ data, render, setRender }: Props) => {
               </LocalizationProvider>
             </Grid>
 
-            <Grid item sm={6}>
+            <Grid item sm={6} paddingRight={1} marginBottom={2}>
               <TextField
                 id="title"
                 size="small"
@@ -174,7 +173,7 @@ export const WorkExperiences = ({ data, render, setRender }: Props) => {
               />
             </Grid>
 
-            <Grid item sm={6}>
+            <Grid item sm={6} paddingLeft={1} marginBottom={2}>
               <TextField
                 id="company"
                 label="Company*"
@@ -185,7 +184,7 @@ export const WorkExperiences = ({ data, render, setRender }: Props) => {
               />
             </Grid>
 
-            <Grid item sm={6}>
+            <Grid item sm={6} paddingRight={1} marginBottom={2}>
               <TextField
                 id="location"
                 label="Location"
@@ -196,7 +195,7 @@ export const WorkExperiences = ({ data, render, setRender }: Props) => {
               />
             </Grid>
 
-            <Grid item sm={6}>
+            <Grid item sm={6} paddingLeft={1} marginBottom={2}>
               <TextField
                 id="url"
                 label="URL"
@@ -211,13 +210,14 @@ export const WorkExperiences = ({ data, render, setRender }: Props) => {
               fullWidth
               id="description"
               label="Description"
-              maxRows={6}
+              multiline
+              rows={2}
               onChange={formik.handleChange}
               value={formik.values.description}
             />
           </Grid>
 
-          <Stack flexDirection="row" justifyContent="flex-end">
+          <Stack flexDirection="row" justifyContent="flex-end" marginTop={5}>
             <Button
               onClick={() => {
                 setIs(Is.NONE)
@@ -245,7 +245,7 @@ export const WorkExperiences = ({ data, render, setRender }: Props) => {
       {canRenderData &&
         data.experiences.map((experience, index) => {
           return (
-            <>
+            <Fragment key={experience.id}>
               <Divider />
               <Stack flexDirection="row" paddingY={2}>
                 <Text variant="body2" color="text.secondary">
@@ -289,7 +289,7 @@ export const WorkExperiences = ({ data, render, setRender }: Props) => {
                   </Stack>
                 </Stack>
               </Stack>
-            </>
+            </Fragment>
           )
         })}
     </>

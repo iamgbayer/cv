@@ -12,6 +12,7 @@ export class GetResumeRepository {
         findResume(username: $username) {
           id
           views
+          skills
           general {
             username
             displayName
@@ -40,9 +41,11 @@ export class GetResumeRepository {
           contacts {
             type
             value
+            id
           }
           languages {
             language
+            id
             proficiency
           }
           availability {

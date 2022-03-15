@@ -38,11 +38,13 @@ type Project {
 }
 
 type Contact {
+  id: String!
   type: String!
   value: String!
 }
 
 type Language {
+  id: String!
   language: String!
   proficiency: String!
 }
@@ -109,11 +111,13 @@ input ProjectInput {
 }
 
 input ContactInput {
+  id: String!
   type: String!
   value: String!
 }
 
 input LanguageInput {
+  id: String!
   language: String!
   proficiency: String!
 }

@@ -77,8 +77,7 @@ const palette: PaletteOptions = {
   error: merge(ERROR, { contrastText: '#fff' }),
   success: merge(SUCCESS, { contrastText: GREY[800] }),
   warning: merge(WARNING, { contrastText: GREY[800] }),
-  mode: 'dark',
-  grey: GREY
+  mode: 'dark'
 }
 
 export const Theme = createTheme({

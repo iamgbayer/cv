@@ -9,6 +9,7 @@ import {
 
 export interface UpdateResumeDto {
   id: string
+  skills?: string[]
   general?: Partial<GeneralEntity>
   contacts?: Partial<ContactEntity[]>
   languages?: Partial<LanguageEntity[]>
