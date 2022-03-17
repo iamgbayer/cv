@@ -21,7 +21,7 @@ jobs:
       - name: Use gcloud CLI for production
         run: |
           gcloud auth configure-docker -q
-          docker build -f packages/server/Dockerfile . -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/server
+          docker build . -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/server
           docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/server
           gcloud config set run/region us-central1
           gcloud run deploy server --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/server:latest --concurrency=60 --platform managed \
