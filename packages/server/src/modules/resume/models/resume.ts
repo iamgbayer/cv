@@ -1,11 +1,4 @@
-import {
-  Field,
-  InputType,
-  ObjectType,
-  OmitType,
-  PartialType,
-  PickType,
-} from '@nestjs/graphql';
+import { Field, InputType, ObjectType, PartialType } from '@nestjs/graphql';
 import {
   AvailabilityEntity,
   ContactEntity,
@@ -14,9 +7,7 @@ import {
   GeneralEntity,
   LanguageEntity,
   ProjectEntity,
-  UpdateResumeDto,
 } from '@cv/core';
-import { Optional } from '@nestjs/common';
 
 @ObjectType()
 @InputType('AvailabilityInput')

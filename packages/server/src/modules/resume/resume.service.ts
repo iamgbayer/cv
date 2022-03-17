@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectFirebase } from 'src/core/firebase/firebase.inject';
 import { Firebase } from 'src/core/firebase/firebase.module';
-import { UpdateResumeDto, ResumeEntity, CreateResumeInput } from '@cv/core';
+import { UpdateResumeInput, ResumeEntity, CreateResumeInput } from '@cv/core';
 import { v4 } from 'uuid';
 import { Resume } from './models/resume';
 
@@ -60,7 +60,7 @@ export class ResumeService {
     return snapshot.docs[0].data() as ResumeEntity;
   }
 
-  public async update(updateResumeInput: UpdateResumeDto) {
+  public async update(updateResumeInput: UpdateResumeInput) {
     try {
       await this.admin
         .firestore()

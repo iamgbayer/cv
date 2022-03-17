@@ -11,6 +11,8 @@
     "start": "lerna run start --parallel",
     "start:site": "yarn workspace @cv/site dev",
     "build:site": "yarn workspace @cv/site build",
+    "build:server": "yarn workspace @cv/server build",
+    "start:server": "yarn workspace @cv/server start:prod",
     "build": "lerna run build --parallel"
   },
   "workspaces": [

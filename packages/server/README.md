@@ -12,6 +12,6 @@ If you are building from a mac M1, you need to use the below parameter in the bu
 --platform linux/amd64
 ```
 
-docker tag server gcr.io/audio-3c8c5/server
+docker tag server gcr.io/curriculum-26bd6/server
 
-docker push gcr.io/audio-3c8c5/server
+docker push gcr.io/curriculum-26bd6/server

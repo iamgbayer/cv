@@ -43,7 +43,7 @@ export class UserGuard implements CanActivate {
   }
 
   private getToken(request: Request): string {
-    let token = request.headers['authorization']?.split(' ')[1] ?? null;
+    const token = request.headers['authorization']?.split(' ')[1] ?? null;
 
     if (token) {
       return token;

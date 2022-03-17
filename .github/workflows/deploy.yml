@@ -1,0 +1,29 @@
+name: Deploy
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Master
+        uses: actions/checkout@v2
+      - name: Echo ref
+        run: echo ${{ github.ref }} @ ${{ github.sha }}
+      - name: Set up Cloud SDK for production
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_email: ${{ secrets.GCP_SA_EMAIL }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+      - name: Use gcloud CLI for production
+        run: |
+          gcloud auth configure-docker -q
+          docker build -f packages/server/Dockerfile . -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/server
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/server
+          gcloud config set run/region us-central1
+          gcloud run deploy server --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/server:latest --concurrency=60 --platform managed \
+            --port=3000

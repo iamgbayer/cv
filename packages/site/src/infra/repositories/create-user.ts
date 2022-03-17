@@ -1,11 +1,11 @@
-import { CreateUserDto } from '@cv/core'
+import { CreateUserInput } from '@cv/core'
 import { gql } from 'graphql-request'
 import { GraphQLHttpClient } from 'infra/protocols/http/graphql-http-client'
 
 export class CreateUserRepository {
   public constructor(private httpClient: GraphQLHttpClient) {}
 
-  public async execute(data: CreateUserDto) {
+  public async execute(data: CreateUserInput) {
     const query = gql`
       mutation CreateUser(
         $username: String!
@@ -37,7 +37,7 @@ export class CreateUserRepository {
     return response.createResume
   }
 
-  private makeData(data: CreateUserDto) {
+  private makeData(data: CreateUserInput) {
     return {
       email: data.email,
       displayName: data.displayName,

@@ -1,4 +1,4 @@
-import { CreateUserDto } from '@cv/core'
+import { CreateUserInput } from '@cv/core'
 import {
   HttpClientFactory,
   IHttpClientFactory,
@@ -17,7 +17,8 @@ export const useCreateUser = () => {
   })
 
   return useMutation(
-    (data: CreateUserDto) => new CreateUserRepository(httpClient).execute(data),
+    (data: CreateUserInput) =>
+      new CreateUserRepository(httpClient).execute(data),
     {
       onSuccess: () => {
         return queryClient.invalidateQueries(QUERIES.User)

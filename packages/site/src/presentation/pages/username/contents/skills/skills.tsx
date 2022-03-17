@@ -32,38 +32,40 @@ export const Skills = ({ data, render, setRender }: Props) => {
 
   return (
     <Stack justifyContent="space-between" height="100%">
-      <Stack
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="space-between"
-        marginBottom={2}
-      >
-        <Stack flexDirection="row" alignItems="center">
-          {isMobile && (
-            <Box marginRight={1}>
-              <IconButton onClick={() => setRender(Render.MENU)}>
-                <ArrowBackIosNewIcon fontSize="small" />
-              </IconButton>
-            </Box>
-          )}
+      <Stack>
+        <Stack
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="space-between"
+          marginBottom={2}
+        >
+          <Stack flexDirection="row" alignItems="center">
+            {isMobile && (
+              <Box marginRight={1}>
+                <IconButton onClick={() => setRender(Render.MENU)}>
+                  <ArrowBackIosNewIcon fontSize="small" />
+                </IconButton>
+              </Box>
+            )}
 
-          <Text>Skills</Text>
+            <Text>Skills</Text>
+          </Stack>
+
+          <Divider />
         </Stack>
 
-        <Divider />
+        <Autocomplete
+          multiple
+          id="skills"
+          options={SKILLS}
+          onChange={(event, value) => setSkills(value)}
+          value={skills}
+          filterSelectedOptions
+          renderInput={(params) => (
+            <TextField {...params} autoFocus label="Skills" />
+          )}
+        />
       </Stack>
-
-      <Autocomplete
-        multiple
-        id="skills"
-        options={SKILLS}
-        onChange={(event, value) => setSkills(value)}
-        value={skills}
-        filterSelectedOptions
-        renderInput={(params) => (
-          <TextField {...params} autoFocus label="Skills" />
-        )}
-      />
 
       <Box marginTop={3} display="flex" justifyContent="flex-end">
         <Button

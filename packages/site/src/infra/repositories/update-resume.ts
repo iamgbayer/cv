@@ -1,11 +1,11 @@
 import { gql } from 'graphql-request'
 import { GraphQLHttpClient } from 'infra/protocols/http/graphql-http-client'
-import { UpdateResumeDto } from '@cv/core'
+import { UpdateResumeInput } from '@cv/core'
 
 export class UpdateResumeRepository {
   public constructor(private httpClient: GraphQLHttpClient) {}
 
-  public async execute(data: UpdateResumeDto) {
+  public async execute(data: UpdateResumeInput) {
     console.log(data)
 
     const query = gql`

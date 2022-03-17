@@ -1,4 +1,4 @@
-import { UpdateResumeDto } from '@cv/core'
+import { UpdateResumeInput } from '@cv/core'
 import {
   container,
   HttpClientFactory,
@@ -16,7 +16,7 @@ export const useUpdateResume = () => {
   })
 
   return useMutation(
-    (data: UpdateResumeDto) =>
+    (data: UpdateResumeInput) =>
       new UpdateResumeRepository(httpClient).execute(data),
     {
       onSuccess: () => {

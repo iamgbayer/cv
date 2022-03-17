@@ -7,7 +7,7 @@ import {
   ProjectEntity
 } from '../entities'
 
-export interface UpdateResumeDto {
+export interface UpdateResumeInput {
   id: string
   skills?: string[]
   general?: Partial<GeneralEntity>
