@@ -5,7 +5,7 @@ import { Head, Theme } from 'presentation/components'
 import { ThemeProvider } from '@mui/material/styles'
 import { CacheProvider } from '@emotion/react'
 import { CssBaseline } from '@mui/material'
-import { AuthProvider } from 'presentation/contexts'
+import { AuthContextProvider } from 'presentation/contexts'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import createEmotionCache from '../src/presentation/create-emotion-cache'
 
@@ -24,7 +24,7 @@ export default function App({ Component, emotionCache = cache, ...props }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
+      <AuthContextProvider>
         <CacheProvider value={emotionCache}>
           <ThemeProvider theme={Theme}>
             <Head />
@@ -32,7 +32,7 @@ export default function App({ Component, emotionCache = cache, ...props }) {
             <Component {...props} />
           </ThemeProvider>
         </CacheProvider>
-      </AuthProvider>
+      </AuthContextProvider>
     </QueryClientProvider>
   )
 }

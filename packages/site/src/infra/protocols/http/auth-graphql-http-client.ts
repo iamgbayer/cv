@@ -1,4 +1,4 @@
-import { AuthToken } from '@cv/core'
+import { Auth } from '@cv/core'
 import { HttpClient } from 'domain/protocols/http/HttpClient'
 import { inject, injectable } from 'inversify'
 import { GraphQLHttpClient } from './graphql-http-client'
@@ -7,7 +7,7 @@ import { GraphQLHttpClient } from './graphql-http-client'
 export class CredentialsGraphQLHttpClient extends HttpClient {
   public constructor(
     @inject(GraphQLHttpClient) private readonly httpClient: GraphQLHttpClient,
-    @inject(AuthToken) private readonly auth: AuthToken
+    @inject(Auth) private readonly auth: Auth
   ) {
     super()
   }
