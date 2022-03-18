@@ -1,6 +1,6 @@
-import { AuthToken } from '@cv/core'
+import { Auth } from '@cv/core'
 import { HttpClient } from 'domain/protocols/http/HttpClient'
-import { FirebaseAuthToken } from 'infra/adapters/firebase-auth-token'
+import { FirebaseAuth } from 'infra/adapters/firebase-auth'
 import { CredentialsGraphQLHttpClient } from 'infra/protocols/http/auth-graphql-http-client'
 import { GraphQLHttpClient } from 'infra/protocols/http/graphql-http-client'
 import { Container } from 'inversify'
@@ -17,7 +17,7 @@ export type IHttpClientFactory = (
   options: HttpClientFactoryOptions
 ) => HttpClient
 
-container.bind(AuthToken).to(FirebaseAuthToken)
+container.bind(Auth).to(FirebaseAuth)
 container.bind(GraphQLHttpClient).to(GraphQLHttpClient)
 container.bind(CredentialsGraphQLHttpClient).to(CredentialsGraphQLHttpClient)
 
@@ -26,7 +26,7 @@ container.bind(HttpClientFactory).toFactory((context) => {
     options.credentials
       ? new CredentialsGraphQLHttpClient(
         context.container.get(GraphQLHttpClient),
-        context.container.get(AuthToken)
+        context.container.get(Auth)
       )
       : context.container.get(GraphQLHttpClient)
 })

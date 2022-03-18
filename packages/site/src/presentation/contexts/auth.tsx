@@ -1,50 +1,32 @@
-import React, { createContext, ReactNode, useEffect, useState } from 'react'
-import firebase from 'firebase/compat/app'
-import 'firebase/compat/auth'
-import 'firebase/compat/firestore'
-import { User } from '@cv/core'
+import React, { createContext, ReactNode, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { useGetResume } from 'presentation/hooks/use-get-resume'
 import { useGetUser } from 'presentation/hooks/use-get-user'
 import { useCreateUser } from 'presentation/hooks/use-create-user'
+import { useContainer } from 'container/client'
+import { Auth, AuthProvider } from '@cv/core'
 
-if (!firebase.apps.length) {
-  firebase.initializeApp({
-    apiKey: 'AIzaSyBBOnzNfqtJlGftHaC2Z1nmzaC4j8NKBtw',
-    authDomain: 'curriculum-26bd6.firebaseapp.com',
-    projectId: 'curriculum-26bd6',
-    storageBucket: 'curriculum-26bd6.appspot.com',
-    messagingSenderId: '371762892095',
-    appId: '1:371762892095:web:20ec0fa8cf0309fd63578a'
-  })
-  firebase.firestore()
-}
-
-type Auth = {
-  authByGoogle: () => Promise<void>
-  logout: () => void
+type AuthContextType = {
+  authenticate: () => Promise<void>
+  unauthenticate: () => void
   isLoading: boolean
 }
 
-export const AuthContext = createContext<Auth | null>(null)
+export const AuthContext = createContext<AuthContextType | null>(null)
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export function AuthContextProvider({ children }: { children: ReactNode }) {
   const router = useRouter()
   const { data, refetch, isLoading } = useGetUser()
   const { mutateAsync } = useCreateUser()
+  const container = useContainer()
 
   useEffect(() => {
     data && ['/auth'].includes(router.pathname) && router.push(data.username)
   }, [data, router])
 
-  const authByGoogle = (): Promise<void> => {
-    const provider = new firebase.auth.GoogleAuthProvider()
-
-    provider.addScope('email')
-
-    return firebase
-      .auth()
-      .signInWithPopup(provider)
+  const authenticate = (): Promise<void> => {
+    return container
+      .get(Auth)
+      .authenticate(AuthProvider.GOOGLE)
       .then(async (response) => {
         const { additionalUserInfo, user } = response
         const { isNewUser } = additionalUserInfo
@@ -62,20 +44,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         router.push('/onboarding')
       })
+      .catch(console.error)
   }
 
-  const logout = async () => {
-    await firebase
-      .auth()
-      .signOut()
+  const unauthenticate = async () => {
+    return container
+      .get(Auth)
+      .unauthenticate()
       .then(() => router.push('/'))
   }
 
   return (
     <AuthContext.Provider
       value={{
-        authByGoogle,
-        logout,
+        authenticate,
+        unauthenticate,
         isLoading
       }}
     >

@@ -6,10 +6,10 @@ import { useState } from 'react'
 
 export const Auth = () => {
   const [error, setError] = useState(null)
-  const { authByGoogle, isLoading } = useAuth()
+  const { authenticate, isLoading } = useAuth()
 
   const signIn = () => {
-    authByGoogle()
+    authenticate()
       .then(() => {})
       .catch((response) => {
         setError(getResponseError(response))
