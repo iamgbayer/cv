@@ -15,7 +15,6 @@ FROM node:16
 
 WORKDIR /app
 COPY packages/server/package.json .
-COPY package.json .
 RUN yarn --production
 COPY --from=build /app/packages/server/dist ./dist
-CMD yarn start:server
+CMD yarn start:prod
