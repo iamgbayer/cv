@@ -2,8 +2,9 @@ import { Divider, Stack } from '@mui/material'
 import React, { Fragment } from 'react'
 import { isEmpty } from 'lodash'
 import { Text } from 'presentation/components'
-import { getName, Is } from './contacts'
+import { getName } from './contacts'
 import { Controls } from '../../controls'
+import { Is } from 'domain/vos/is'
 
 export const ListContacts = ({
   data,

@@ -15,25 +15,20 @@ import {
 } from '@mui/material'
 import { Button, Text } from 'presentation/components'
 import { useIsMobile } from 'presentation/hooks/use-is-mobile'
-import { Fragment, useState } from 'react'
-import { Render } from '../../../../../../pages/[username]'
+import { useState } from 'react'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import { useUpdateResume } from 'presentation/hooks/use-update-resume'
 import { useFormik } from 'formik'
 import { v4 } from 'uuid'
 import { isEmpty } from 'lodash'
 import { ListLanguages } from './list-languages'
+import { Is } from 'domain/vos/is'
+import { Render } from 'domain/vos/render'
 
 type Props = {
   data: ResumeEntity
   render: Render
   setRender
-}
-
-export enum Is {
-  NONE = 'NONE',
-  EDITING = 'EDITING',
-  ADDIND = 'ADDIND'
 }
 
 const languages = [
@@ -60,32 +55,33 @@ export const Languages = ({ data, render, setRender }: Props) => {
   const [is, setIs] = useState(Is.NONE)
   const { mutateAsync, isLoading, mutate } = useUpdateResume()
 
-  const formik = useFormik({
-    initialValues: {
-      id: v4(),
-      language: '',
-      proficiency: ''
-    },
-    onSubmit: async (values) => {
-      const getLanguages = () => {
-        let languages = data.languages
+  const { resetForm, handleChange, setFieldValue, values, submitForm } =
+    useFormik({
+      initialValues: {
+        id: v4(),
+        language: '',
+        proficiency: ''
+      },
+      onSubmit: async (values) => {
+        const getLanguages = () => {
+          let languages = data.languages
 
-        return is === Is.EDITING
-          ? languages.filter((experience) => values.id !== experience.id)
-          : languages
+          return is === Is.EDITING
+            ? languages.filter((experience) => values.id !== experience.id)
+            : languages
+        }
+
+        let languages = [...getLanguages(), values]
+
+        await mutateAsync({
+          ...data,
+          languages
+        })
+
+        resetForm()
+        setIs(Is.NONE)
       }
-
-      let languages = [...getLanguages(), values]
-
-      await mutateAsync({
-        ...data,
-        languages
-      })
-
-      formik.resetForm()
-      setIs(Is.NONE)
-    }
-  })
+    })
 
   const canRenderEmpty = isEmpty(data.languages) && is === Is.NONE
   const isEditing = [Is.ADDIND, Is.EDITING].includes(is)
@@ -128,7 +124,7 @@ export const Languages = ({ data, render, setRender }: Props) => {
                 getOptionLabel={(option) => option.name}
                 onChange={(event, value) => {
                   //@ts-ignore
-                  formik.setFieldValue('language', value?.value)
+                  setFieldValue('language', value?.value)
                 }}
                 options={languages}
                 renderInput={(params) => (
@@ -145,9 +141,9 @@ export const Languages = ({ data, render, setRender }: Props) => {
                   id="proficiency"
                   name="proficiency"
                   size="small"
-                  value={formik.values.proficiency}
+                  value={values.proficiency}
                   label="Proficiency*"
-                  onChange={formik.handleChange}
+                  onChange={handleChange}
                 >
                   {proficiencies.map((proficiency) => (
                     <MenuItem key={proficiency.value} value={proficiency.value}>
@@ -163,7 +159,7 @@ export const Languages = ({ data, render, setRender }: Props) => {
             <Button
               onClick={() => {
                 setIs(Is.NONE)
-                formik.resetForm()
+                resetForm()
               }}
             >
               Cancel
@@ -173,7 +169,7 @@ export const Languages = ({ data, render, setRender }: Props) => {
               <Button
                 variant="contained"
                 loading={isLoading}
-                onClick={() => formik.submitForm()}
+                onClick={() => submitForm()}
               >
                 Save
               </Button>

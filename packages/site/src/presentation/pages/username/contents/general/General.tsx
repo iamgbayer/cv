@@ -2,10 +2,10 @@ import { ResumeEntity } from '@cv/core'
 import { Box, Divider, IconButton, Stack, TextField } from '@mui/material'
 import { Button, Text } from 'presentation/components'
 import { useIsMobile } from 'presentation/hooks/use-is-mobile'
-import { Render } from '../../../../../../pages/[username]'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import { useUpdateResume } from 'presentation/hooks/use-update-resume'
 import { useFormik } from 'formik'
+import { Render } from 'domain/vos/render'
 
 type Props = {
   data: ResumeEntity
@@ -16,7 +16,7 @@ export const General = ({ data, setRender }: Props) => {
   const isMobile = useIsMobile()
   const { mutateAsync, isLoading } = useUpdateResume()
 
-  const { resetForm, values, submitForm, handleChange } = useFormik({
+  const { values, submitForm, handleChange } = useFormik({
     initialValues: data.general,
     enableReinitialize: true,
     onSubmit: async (values) => {
@@ -56,6 +56,7 @@ export const General = ({ data, setRender }: Props) => {
             id="username"
             label="Username*"
             fullWidth
+            disabled
             size="small"
             onChange={handleChange}
             value={values.username}

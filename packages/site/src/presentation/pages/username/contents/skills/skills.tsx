@@ -9,11 +9,11 @@ import {
 } from '@mui/material'
 import { Button, Text } from 'presentation/components'
 import { useIsMobile } from 'presentation/hooks/use-is-mobile'
-import { Render } from '../../../../../../pages/[username]'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import { useUpdateResume } from 'presentation/hooks/use-update-resume'
 import { isEmpty } from 'lodash'
 import { useState } from 'react'
+import { Render } from 'domain/vos/render'
 
 type Props = {
   data: ResumeEntity
@@ -25,7 +25,7 @@ const SKILLS = ['React', 'Javascript', 'Java', 'Angular']
 
 export const Skills = ({ data, render, setRender }: Props) => {
   const isMobile = useIsMobile()
-  const { mutateAsync, isLoading, mutate } = useUpdateResume()
+  const { mutateAsync, isLoading } = useUpdateResume()
   const [skills, setSkills] = useState(data.skills)
 
   const canRenderEmpty = isEmpty(data.skills)

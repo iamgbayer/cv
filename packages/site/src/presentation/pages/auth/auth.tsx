@@ -6,7 +6,7 @@ import { useState } from 'react'
 
 export const Auth = () => {
   const [error, setError] = useState(null)
-  const { authByGoogle } = useAuth()
+  const { authByGoogle, isLoading } = useAuth()
 
   const signIn = () => {
     authByGoogle()
@@ -33,9 +33,10 @@ export const Auth = () => {
         <Button
           fullWidth
           size="large"
+          loading={isLoading}
           type="submit"
           variant="contained"
-          onClick={() => signIn()}
+          onClick={signIn}
         >
           Continue with Google
         </Button>

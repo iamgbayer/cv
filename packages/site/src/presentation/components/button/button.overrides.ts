@@ -33,7 +33,6 @@ export const Button = (theme: Theme): Pick<Components, 'MuiButton'> => ({
       containedInherit: {
         color: theme.palette.grey[800],
         boxShadow: 'none',
-        // boxShadow: theme.customShadows.z8,
         '&:hover': {
           backgroundColor: theme.palette.grey[400]
         }

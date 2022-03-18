@@ -23,13 +23,14 @@ if (!firebase.apps.length) {
 type Auth = {
   authByGoogle: () => Promise<void>
   logout: () => void
+  isLoading: boolean
 }
 
 export const AuthContext = createContext<Auth | null>(null)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter()
-  const { data, refetch } = useGetUser()
+  const { data, refetch, isLoading } = useGetUser()
   const { mutateAsync } = useCreateUser()
 
   useEffect(() => {
@@ -74,7 +75,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{
         authByGoogle,
-        logout
+        logout,
+        isLoading
       }}
     >
       {children}

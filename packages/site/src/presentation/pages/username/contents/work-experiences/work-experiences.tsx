@@ -20,7 +20,8 @@ import { arrayMoveImmutable } from 'array-move'
 import { v4 } from 'uuid'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import { useIsMobile } from 'presentation/hooks/use-is-mobile'
-import { Render } from '../../../../../../pages/[username]'
+import { Is } from 'domain/vos/is'
+import { Render } from 'domain/vos/render'
 
 type Props = {
   data: ResumeEntity
@@ -28,18 +29,19 @@ type Props = {
   setRender
 }
 
-enum Is {
-  NONE = 'NONE',
-  EDITING = 'EDITING',
-  ADDIND = 'ADDIND'
-}
-
 export const WorkExperiences = ({ data, render, setRender }: Props) => {
   const [is, setIs] = useState(Is.NONE)
   const { mutateAsync, isLoading, mutate } = useUpdateResume()
   const isMobile = useIsMobile()
 
-  const formik = useFormik({
+  const {
+    resetForm,
+    setValues,
+    submitForm,
+    handleChange,
+    setFieldValue,
+    values
+  } = useFormik({
     initialValues: {
       id: v4(),
       from: '',
@@ -66,7 +68,7 @@ export const WorkExperiences = ({ data, render, setRender }: Props) => {
         experiences
       })
 
-      formik.resetForm()
+      resetForm()
       setIs(Is.NONE)
     }
   })
@@ -76,7 +78,7 @@ export const WorkExperiences = ({ data, render, setRender }: Props) => {
   const isEditing = [Is.ADDIND, Is.EDITING].includes(is)
 
   const onEdit = (value: ExperienceEntity) => {
-    formik.setValues(value)
+    setValues(value)
     setIs(Is.EDITING)
   }
 
@@ -132,9 +134,9 @@ export const WorkExperiences = ({ data, render, setRender }: Props) => {
                   label="From*"
                   openTo="year"
                   views={['year', 'month']}
-                  value={dayjs(formik.values.from).format('MMM - YYYY')}
+                  value={dayjs(values.from).format('MMM - YYYY')}
                   onChange={(value) =>
-                    formik.setFieldValue('from', dayjs(value).toDate())
+                    setFieldValue('from', dayjs(value).toDate())
                   }
                   maxDate={dayjs()}
                   renderInput={(params) => (
@@ -150,9 +152,9 @@ export const WorkExperiences = ({ data, render, setRender }: Props) => {
                   label="To*"
                   openTo="year"
                   views={['year', 'month']}
-                  value={dayjs(formik.values.to).format('MMM - YYYY')}
+                  value={dayjs(values.to).format('MMM - YYYY')}
                   onChange={(value) =>
-                    formik.setFieldValue('to', dayjs(value).toDate())
+                    setFieldValue('to', dayjs(value).toDate())
                   }
                   maxDate={dayjs()}
                   renderInput={(params) => (
@@ -168,8 +170,8 @@ export const WorkExperiences = ({ data, render, setRender }: Props) => {
                 size="small"
                 label="Title*"
                 fullWidth
-                onChange={formik.handleChange}
-                value={formik.values.title}
+                onChange={handleChange}
+                value={values.title}
               />
             </Grid>
 
@@ -179,8 +181,8 @@ export const WorkExperiences = ({ data, render, setRender }: Props) => {
                 label="Company*"
                 fullWidth
                 size="small"
-                onChange={formik.handleChange}
-                value={formik.values.company}
+                onChange={handleChange}
+                value={values.company}
               />
             </Grid>
 
@@ -190,8 +192,8 @@ export const WorkExperiences = ({ data, render, setRender }: Props) => {
                 label="Location"
                 fullWidth
                 size="small"
-                onChange={formik.handleChange}
-                value={formik.values.location}
+                onChange={handleChange}
+                value={values.location}
               />
             </Grid>
 
@@ -201,8 +203,8 @@ export const WorkExperiences = ({ data, render, setRender }: Props) => {
                 label="URL"
                 fullWidth
                 size="small"
-                onChange={formik.handleChange}
-                value={formik.values.url}
+                onChange={handleChange}
+                value={values.url}
               />
             </Grid>
 
@@ -212,8 +214,8 @@ export const WorkExperiences = ({ data, render, setRender }: Props) => {
               label="Description"
               multiline
               rows={2}
-              onChange={formik.handleChange}
-              value={formik.values.description}
+              onChange={handleChange}
+              value={values.description}
             />
           </Grid>
 
@@ -221,7 +223,7 @@ export const WorkExperiences = ({ data, render, setRender }: Props) => {
             <Button
               onClick={() => {
                 setIs(Is.NONE)
-                formik.resetForm()
+                resetForm()
               }}
             >
               Cancel
@@ -231,7 +233,7 @@ export const WorkExperiences = ({ data, render, setRender }: Props) => {
               <Button
                 variant="contained"
                 loading={isLoading}
-                onClick={() => formik.submitForm()}
+                onClick={() => submitForm()}
               >
                 Save
               </Button>

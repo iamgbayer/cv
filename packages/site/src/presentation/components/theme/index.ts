@@ -1,4 +1,4 @@
-import { createTheme, alpha, PaletteOptions } from '@mui/material/styles'
+import { createTheme, PaletteOptions } from '@mui/material/styles'
 import { merge } from 'ramda'
 import { Button } from '../button/button.overrides'
 import { Card } from '../card/card.overrides'
@@ -16,9 +16,10 @@ declare module '@mui/material/styles/createPalette' {
 }
 
 const PRIMARY = {
-  light: '#5e35b1',
-  main: '#512da8',
-  dark: '#4527a0'
+  main: '#fff',
+  light: '#fff',
+  contrastText: '#121212',
+  dark: '#fff'
 }
 
 const INFO = {
@@ -50,33 +51,12 @@ const ERROR = {
   darker: '#7A0C2E'
 }
 
-const GREY = {
-  0: '#FFFFFF',
-  100: '#F9FAFB',
-  200: '#F4F6F8',
-  300: '#DFE3E8',
-  400: '#C4CDD5',
-  500: '#919EAB',
-  600: '#637381',
-  700: '#454F5B',
-  800: '#212B36',
-  900: '#161C24',
-  500_8: alpha('#919EAB', 0.08),
-  500_12: alpha('#919EAB', 0.12),
-  500_16: alpha('#919EAB', 0.16),
-  500_24: alpha('#919EAB', 0.24),
-  500_32: alpha('#919EAB', 0.32),
-  500_48: alpha('#919EAB', 0.48),
-  500_56: alpha('#919EAB', 0.56),
-  500_80: alpha('#919EAB', 0.8)
-}
-
 const palette: PaletteOptions = {
-  primary: merge(PRIMARY, { contrastText: '#fff' }),
+  primary: PRIMARY,
   info: merge(INFO, { contrastText: '#fff' }),
   error: merge(ERROR, { contrastText: '#fff' }),
-  success: merge(SUCCESS, { contrastText: GREY[800] }),
-  warning: merge(WARNING, { contrastText: GREY[800] }),
+  success: merge(SUCCESS, { contrastText: '#fff' }),
+  warning: merge(WARNING, { contrastText: '#fff' }),
   mode: 'dark'
 }
 

@@ -6,30 +6,24 @@ import {
   Stack,
   Grid,
   TextField,
-  Autocomplete,
-  Link
+  Autocomplete
 } from '@mui/material'
 import { Button, Text } from 'presentation/components'
 import { useIsMobile } from 'presentation/hooks/use-is-mobile'
-import { Fragment, useState } from 'react'
-import { Render } from '../../../../../../pages/[username]'
+import { useState } from 'react'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import { useUpdateResume } from 'presentation/hooks/use-update-resume'
 import { useFormik } from 'formik'
 import { v4 } from 'uuid'
 import { isEmpty } from 'lodash'
 import { ListContacts } from './list-contacts'
+import { Is } from 'domain/vos/is'
+import { Render } from 'domain/vos/render'
 
 type Props = {
   data: ResumeEntity
   render: Render
   setRender
-}
-
-export enum Is {
-  NONE = 'NONE',
-  EDITING = 'EDITING',
-  ADDIND = 'ADDIND'
 }
 
 const contacts = [
@@ -48,38 +42,39 @@ const contacts = [
 export const getName = (value) =>
   contacts.find((contact) => contact.value === value).name
 
-export const Contacts = ({ data, render, setRender }: Props) => {
+export const Contacts = ({ data, setRender }: Props) => {
   const isMobile = useIsMobile()
   const [is, setIs] = useState(Is.NONE)
-  const { mutateAsync, isLoading, mutate } = useUpdateResume()
+  const { mutateAsync, isLoading } = useUpdateResume()
   const [label, setLabel] = useState('Value*')
 
-  const formik = useFormik({
-    initialValues: {
-      id: v4(),
-      type: '',
-      value: ''
-    },
-    onSubmit: async (values) => {
-      const getContacts = () => {
-        let contacts = data.contacts
+  const { resetForm, values, handleChange, setFieldValue, submitForm } =
+    useFormik({
+      initialValues: {
+        id: v4(),
+        type: '',
+        value: ''
+      },
+      onSubmit: async (values) => {
+        const getContacts = () => {
+          let contacts = data.contacts
 
-        return is === Is.EDITING
-          ? contacts.filter((experience) => values.id !== experience.id)
-          : contacts
+          return is === Is.EDITING
+            ? contacts.filter((experience) => values.id !== experience.id)
+            : contacts
+        }
+
+        let contacts = [...getContacts(), values]
+
+        await mutateAsync({
+          ...data,
+          contacts
+        })
+
+        resetForm()
+        setIs(Is.NONE)
       }
-
-      let contacts = [...getContacts(), values]
-
-      await mutateAsync({
-        ...data,
-        contacts
-      })
-
-      formik.resetForm()
-      setIs(Is.NONE)
-    }
-  })
+    })
 
   const canRenderEmpty = isEmpty(data.contacts) && is === Is.NONE
   const isEditing = [Is.ADDIND, Is.EDITING].includes(is)
@@ -124,7 +119,7 @@ export const Contacts = ({ data, render, setRender }: Props) => {
                   //@ts-ignore
                   setLabel(value.label)
                   //@ts-ignore
-                  formik.setFieldValue('type', value?.value)
+                  setFieldValue('type', value?.value)
                 }}
                 options={contacts}
                 renderInput={(params) => (
@@ -139,8 +134,8 @@ export const Contacts = ({ data, render, setRender }: Props) => {
                 label={label}
                 fullWidth
                 size="small"
-                onChange={formik.handleChange}
-                value={formik.values.value}
+                onChange={handleChange}
+                value={values.value}
               />
             </Grid>
           </Grid>
@@ -149,7 +144,7 @@ export const Contacts = ({ data, render, setRender }: Props) => {
             <Button
               onClick={() => {
                 setIs(Is.NONE)
-                formik.resetForm()
+                resetForm()
               }}
             >
               Cancel
@@ -159,7 +154,7 @@ export const Contacts = ({ data, render, setRender }: Props) => {
               <Button
                 variant="contained"
                 loading={isLoading}
-                onClick={() => formik.submitForm()}
+                onClick={() => submitForm()}
               >
                 Save
               </Button>

@@ -2,8 +2,9 @@ import { Divider, Stack } from '@mui/material'
 import React, { Fragment } from 'react'
 import { isEmpty } from 'lodash'
 import { Text } from 'presentation/components'
-import { getLanguageName, getProficiencyName, Is } from './languages'
+import { getLanguageName, getProficiencyName } from './languages'
 import { Controls } from '../../controls'
+import { Is } from 'domain/vos/is'
 
 export const ListLanguages = ({
   data,
