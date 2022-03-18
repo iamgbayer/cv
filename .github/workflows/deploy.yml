@@ -1,8 +1,10 @@
-name: Deploy
+name: Deploy Server
 
 on:
   push:
     branches: [master]
+    paths:
+      - "packages/server/**"
 
 jobs:
   Deploy:
@@ -16,9 +18,9 @@ jobs:
         uses: "google-github-actions/auth@v0"
         with:
           credentials_json: "${{ secrets.GOOGLE_CREDENTIALS }}"
-      - name: Set up Cloud SDK for production
+      - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@master
-      - name: Use gcloud CLI for production
+      - name: Use gcloud CLI
         run: |
           gcloud auth configure-docker -q
           docker build . -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/server
