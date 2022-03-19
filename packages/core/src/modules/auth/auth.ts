@@ -1,9 +1,7 @@
 import { injectable } from 'inversify'
 
 export type AuthUserType = {
-  additionalUserInfo?: {
-    isNewUser: boolean
-  }
+  isNewUser: boolean
   user: {
     displayName: string
     email: string

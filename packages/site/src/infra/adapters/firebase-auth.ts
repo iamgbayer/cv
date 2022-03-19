@@ -1,5 +1,11 @@
 import { Auth, AuthProvider, AuthUserType } from '@cv/core'
-import { getAuth } from 'firebase/auth'
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  getAdditionalUserInfo,
+  UserCredential
+} from 'firebase/auth'
 import { injectable } from 'inversify'
 import firebase from 'firebase/compat/app'
 
@@ -27,16 +33,31 @@ export class FirebaseAuth extends Auth {
   }
 
   public unauthenticate(): Promise<void> {
-    return firebase.auth().signOut()
+    return getAuth().signOut()
   }
 
   public authenticate(provider: AuthProvider): Promise<AuthUserType> {
-    return firebase.auth().signInWithPopup(this.getProvider(provider))
+    return new Promise((resolve: (authUser: AuthUserType) => void, reject) =>
+      signInWithPopup(getAuth(), this.getProvider(provider))
+        .then(async (response: UserCredential) => {
+          const { isNewUser } = await getAdditionalUserInfo(response)
+
+          resolve({
+            isNewUser,
+            user: {
+              displayName: response.user.displayName,
+              email: response.user.email,
+              photoURL: response.user.photoURL
+            }
+          })
+        })
+        .catch(reject)
+    )
   }
 
   private getProvider(provider: AuthProvider): firebase.auth.AuthProvider {
     const providers = {
-      [AuthProvider.GOOGLE]: new firebase.auth.GoogleAuthProvider()
+      [AuthProvider.GOOGLE]: new GoogleAuthProvider()
     }
 
     const p = providers[provider]

@@ -28,8 +28,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
       .get(Auth)
       .authenticate(AuthProvider.GOOGLE)
       .then(async (response) => {
-        const { additionalUserInfo, user } = response
-        const { isNewUser } = additionalUserInfo
+        const { isNewUser, user } = response
 
         if (!isNewUser) {
           refetch()
