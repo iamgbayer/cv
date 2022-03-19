@@ -6,7 +6,7 @@ import { ThemeProvider } from '@mui/material/styles'
 import { CacheProvider } from '@emotion/react'
 import { CssBaseline } from '@mui/material'
 import { AuthContextProvider } from 'presentation/contexts'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import { QueryClient, QueryClientProvider, Hydrate } from 'react-query'
 import createEmotionCache from '../src/presentation/create-emotion-cache'
 
 const tagManagerArgs = {
@@ -15,24 +15,26 @@ const tagManagerArgs = {
 
 const cache = createEmotionCache()
 
-const queryClient = new QueryClient()
-
 export default function App({ Component, emotionCache = cache, ...props }) {
+  const [queryClient] = React.useState(() => new QueryClient())
+
   useEffect(() => {
     TagManager.initialize(tagManagerArgs)
   }, [])
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthContextProvider>
-        <CacheProvider value={emotionCache}>
-          <ThemeProvider theme={Theme}>
-            <Head />
-            <CssBaseline />
-            <Component {...props} />
-          </ThemeProvider>
-        </CacheProvider>
-      </AuthContextProvider>
+      <Hydrate state={props.pageProps.dehydratedState}>
+        <AuthContextProvider>
+          <CacheProvider value={emotionCache}>
+            <ThemeProvider theme={Theme}>
+              <Head />
+              <CssBaseline />
+              <Component {...props} />
+            </ThemeProvider>
+          </CacheProvider>
+        </AuthContextProvider>
+      </Hydrate>
     </QueryClientProvider>
   )
 }

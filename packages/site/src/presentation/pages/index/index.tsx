@@ -130,7 +130,7 @@ export const Index = () => {
             <Button
               size="large"
               variant="contained"
-              onClick={() => router.push('/signin')}
+              onClick={() => router.push('/auth')}
               sx={{
                 whiteSpace: 'nowrap',
                 color: (theme) =>

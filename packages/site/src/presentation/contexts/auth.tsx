@@ -54,10 +54,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
   }
 
   const unauthenticate = async () => {
-    return container
-      .get(Auth)
-      .unauthenticate()
-      .then(() => router.push('/'))
+    return container.get(Auth).unauthenticate()
   }
 
   return (

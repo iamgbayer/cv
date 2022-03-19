@@ -31,6 +31,7 @@ import { ListContacts } from './contents/contacts/list-contacts'
 import { ListLanguages } from './contents/languages/list-languages'
 import { ListSkills } from './contents/skills/list-skills'
 import { useAuth } from 'presentation/hooks/use-auth'
+import { useRouter } from 'next/router'
 
 const reorder = (list, startIndex, endIndex): any[] => {
   const result = Array.from(list)
@@ -73,12 +74,14 @@ const Hamburguer = styled(Fab)(({ theme }) => ({
 }))
 
 export const Username = ({ username }: Props) => {
-  const { data, isLoading } = useGetResume(username)
+  const { data, isLoading, status } = useGetResume(username)
   const [dialog, setDialog] = useState(false)
   const [content, setContent] = useState(Content.GENERAL)
   const [render, setRender] = useState(Render.MENU)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const router = useRouter()
   const { isAuthenticated, unauthenticate } = useAuth()
+  console.log(status, isLoading, data)
   const isMobile = useIsMobile()
   const [list, setList] = useState([
     {
@@ -265,7 +268,7 @@ export const Username = ({ username }: Props) => {
                 {data.general.role} in {data.general.location}
               </Text>
               <Text fontSize={14} color="text.secondary">
-                {window.location.hostname}/{username}
+                {username}
               </Text>
             </Stack>
           </Stack>

@@ -17,12 +17,14 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const username = query?.username as string
 
   try {
-    await queryClient.fetchQuery([QUERIES.Resume], () =>
+    await queryClient.prefetchQuery([QUERIES.Resume], () =>
       new GetResumeRepository(container.get(GraphQLHttpClient)).execute(
         username
       )
     )
   } catch (error) {
+    console.error(error)
+
     return {
       notFound: true
     }
