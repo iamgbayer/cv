@@ -13,6 +13,10 @@ declare module '@mui/material/styles/createPalette' {
   interface TypeBackground {
     neutral: string
   }
+
+  interface TypeText {
+    contrast: string
+  }
 }
 
 const PRIMARY = {
@@ -57,7 +61,10 @@ const palette: PaletteOptions = {
   error: merge(ERROR, { contrastText: '#fff' }),
   success: merge(SUCCESS, { contrastText: '#fff' }),
   warning: merge(WARNING, { contrastText: '#fff' }),
-  mode: 'dark'
+  mode: 'dark',
+  text: {
+    contrast: '#121212'
+  }
 }
 
 export const Theme = createTheme({

@@ -21,12 +21,12 @@ export const ListLanguages = ({
           return (
             <Fragment key={language.id}>
               {hasDivider && <Divider />}
-              <Stack flexDirection="row" paddingY={2}>
+              <Stack flexDirection={['column', 'row']} paddingY={2}>
                 <Text variant="body2" width={60} color="text.secondary">
                   {getLanguageName(language.language)}
                 </Text>
 
-                <Stack marginLeft={4}>
+                <Stack marginLeft={[0, 4]}>
                   <Text variant="body2">
                     {getProficiencyName(language.proficiency)}
                   </Text>

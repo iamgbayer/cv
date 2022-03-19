@@ -32,6 +32,7 @@ import { ListLanguages } from './contents/languages/list-languages'
 import { ListSkills } from './contents/skills/list-skills'
 import { useAuth } from 'presentation/hooks/use-auth'
 import { useRouter } from 'next/router'
+import { ListWorkExperiences } from './contents/work-experiences/list-work-experiences'
 
 const reorder = (list, startIndex, endIndex): any[] => {
   const result = Array.from(list)
@@ -267,9 +268,6 @@ export const Username = ({ username }: Props) => {
               <Text variant="body1" color="text.secondary">
                 {data.general.role} in {data.general.location}
               </Text>
-              <Text fontSize={14} color="text.secondary">
-                {username}
-              </Text>
             </Stack>
           </Stack>
 
@@ -286,32 +284,7 @@ export const Username = ({ username }: Props) => {
             <Stack>
               <Text variant="h5">Work experiences</Text>
 
-              {data.experiences.map((experience) => {
-                return (
-                  <>
-                    <Stack flexDirection="row" paddingY={2}>
-                      <Text variant="body2" color="text.secondary">
-                        {dayjs(experience.from).format('MMM YYYY')}
-                      </Text>
-                      <Text variant="body2" color="text.secondary" marginX={1}>
-                        -
-                      </Text>
-                      <Text variant="body2" color="text.secondary">
-                        {dayjs(experience.to).format('MMM YYYY')}
-                      </Text>
-
-                      <Stack marginLeft={4}>
-                        <Text variant="body2">
-                          {experience.title} at {experience.company}
-                        </Text>
-                        <Text variant="body2" color="text.secondary">
-                          {experience.location}
-                        </Text>
-                      </Stack>
-                    </Stack>
-                  </>
-                )
-              })}
+              <ListWorkExperiences data={data} />
             </Stack>
           )}
 
@@ -331,7 +304,7 @@ export const Username = ({ username }: Props) => {
                 Languages
               </Text>
 
-              <ListLanguages hasControls={false} data={data} />
+              <ListLanguages data={data} />
             </Stack>
           )}
 

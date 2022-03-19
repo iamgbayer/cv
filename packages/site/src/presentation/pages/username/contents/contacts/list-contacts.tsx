@@ -22,12 +22,12 @@ export const ListContacts = ({
             <Fragment key={contact.id}>
               {hasDivider && <Divider />}
 
-              <Stack flexDirection="row" paddingY={2}>
+              <Stack flexDirection={['column', 'row']} paddingY={2}>
                 <Text variant="body2" width={60} color="text.secondary">
                   {getName(contact.type)}
                 </Text>
 
-                <Stack marginLeft={4}>
+                <Stack marginLeft={[0, 4]}>
                   <Text variant="body2">{contact.value}</Text>
 
                   {hasControls && (

@@ -1,14 +1,7 @@
-import {
-  Divider,
-  Grid,
-  IconButton,
-  Link,
-  Stack,
-  TextField
-} from '@mui/material'
+import { Grid, IconButton, Stack, TextField } from '@mui/material'
 import { useFormik } from 'formik'
 import { Box, Button, Text } from 'presentation/components'
-import { Fragment, useState } from 'react'
+import { useState } from 'react'
 import { isEmpty } from 'lodash'
 import Adapter from '@mui/lab/AdapterDayjs'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
@@ -22,6 +15,7 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import { useIsMobile } from 'presentation/hooks/use-is-mobile'
 import { Is } from 'domain/vos/is'
 import { Render } from 'domain/vos/render'
+import { ListWorkExperiences } from './list-work-experiences'
 
 type Props = {
   data: ResumeEntity
@@ -244,56 +238,12 @@ export const WorkExperiences = ({ data, render, setRender }: Props) => {
 
       {canRenderEmpty && <Text>empty</Text>}
 
-      {canRenderData &&
-        data.experiences.map((experience, index) => {
-          return (
-            <Fragment key={experience.id}>
-              <Divider />
-              <Stack flexDirection="row" paddingY={2}>
-                <Text variant="body2" color="text.secondary">
-                  {dayjs(experience.from).format('MMM YYYY')}
-                </Text>
-                <Text variant="body2" color="text.secondary" marginX={1}>
-                  —
-                </Text>
-                <Text variant="body2" color="text.secondary">
-                  {dayjs(experience.to).format('MMM YYYY')}
-                </Text>
-
-                <Stack marginLeft={4}>
-                  <Text variant="body2">
-                    {experience.title} at {experience.company}
-                  </Text>
-                  <Text variant="body2">{experience.location}</Text>
-                  <Stack flexDirection="row" marginTop={1}>
-                    <Link
-                      color="text.secondary"
-                      variant="body2"
-                      onClick={() => onEdit(experience)}
-                    >
-                      Edit
-                    </Link>
-                    <Link
-                      color="text.secondary"
-                      variant="body2"
-                      marginX={1}
-                      onClick={() => onDelete(experience)}
-                    >
-                      Delete
-                    </Link>
-                    <Link
-                      color="text.secondary"
-                      variant="body2"
-                      onClick={() => onMoveDown(index)}
-                    >
-                      Move down
-                    </Link>
-                  </Stack>
-                </Stack>
-              </Stack>
-            </Fragment>
-          )
-        })}
+      <ListWorkExperiences
+        is={is}
+        data={data}
+        hasControls={true}
+        hasDivider={true}
+      />
     </>
   )
 }

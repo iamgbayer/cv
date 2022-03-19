@@ -47,15 +47,13 @@ export const Index = () => {
   return (
     <>
       <Bar>
-        <Text>
+        <Text variant="body2" color="text.contrast">
           Our application still in beta, give us your suggestion
           <Link
             passHref
             href="https://emojicom.io/feedback#q5uvFvidEQB4Kg0fjLHc"
           >
-            <Text marginLeft={0.5} fontWeight={700} sx={{ cursor: 'pointer' }}>
-              clicking here
-            </Text>
+            <strong> clicking here.</strong>
           </Link>
         </Text>
       </Bar>
