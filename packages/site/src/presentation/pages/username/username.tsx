@@ -30,6 +30,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { ListContacts } from './contents/contacts/list-contacts'
 import { ListLanguages } from './contents/languages/list-languages'
 import { ListSkills } from './contents/skills/list-skills'
+import { useAuth } from 'presentation/hooks/use-auth'
 
 const reorder = (list, startIndex, endIndex): any[] => {
   const result = Array.from(list)
@@ -77,6 +78,7 @@ export const Username = ({ username }: Props) => {
   const [content, setContent] = useState(Content.GENERAL)
   const [render, setRender] = useState(Render.MENU)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { isAuthenticated, unauthenticate } = useAuth()
   const isMobile = useIsMobile()
   const [list, setList] = useState([
     {
@@ -152,7 +154,9 @@ export const Username = ({ username }: Props) => {
           </Stack>
 
           <Link color="text.secondary">Settings</Link>
-          <Link color="text.secondary">Logout</Link>
+          <Link color="text.secondary" onClick={() => unauthenticate()}>
+            Logout
+          </Link>
         </Stack>
       </Drawer>
 
@@ -233,14 +237,18 @@ export const Username = ({ username }: Props) => {
         </Stack>
       </Dialog>
 
-      <Edit onClick={() => setDialog(true)} variant="extended">
-        <EditIcon fontSize="small" />
-        <Text marginLeft={1}>Edit profile</Text>
-      </Edit>
+      {isAuthenticated && (
+        <>
+          <Edit onClick={() => setDialog(true)} variant="extended">
+            <EditIcon fontSize="small" />
+            <Text marginLeft={1}>Edit profile</Text>
+          </Edit>
 
-      <Hamburguer size="medium" onClick={() => setIsMenuOpen(true)}>
-        <MenuIcon fontSize="small" />
-      </Hamburguer>
+          <Hamburguer size="medium" onClick={() => setIsMenuOpen(true)}>
+            <MenuIcon fontSize="small" />
+          </Hamburguer>
+        </>
+      )}
 
       <Container maxWidth="md">
         <Stack paddingY={8}>

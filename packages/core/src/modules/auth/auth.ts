@@ -20,4 +20,6 @@ export abstract class Auth {
   public abstract authenticate(provider: AuthProvider): Promise<AuthUserType>
 
   public abstract unauthenticate(): Promise<void>
+
+  public abstract listen(callable: (user: unknown) => void): void
 }

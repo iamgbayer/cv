@@ -32,6 +32,10 @@ export class FirebaseAuth extends Auth {
     )
   }
 
+  public listen(callable: (user: unknown) => void) {
+    return getAuth().onAuthStateChanged(callable)
+  }
+
   public unauthenticate(): Promise<void> {
     return getAuth().signOut()
   }

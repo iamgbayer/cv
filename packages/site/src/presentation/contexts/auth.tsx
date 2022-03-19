@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useEffect } from 'react'
+import React, { createContext, ReactNode, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useGetUser } from 'presentation/hooks/use-get-user'
 import { useCreateUser } from 'presentation/hooks/use-create-user'
@@ -9,6 +9,7 @@ type AuthContextType = {
   authenticate: () => Promise<void>
   unauthenticate: () => void
   isLoading: boolean
+  isAuthenticated: boolean
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null)
@@ -18,6 +19,12 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
   const { data, refetch, isLoading } = useGetUser()
   const { mutateAsync } = useCreateUser()
   const container = useContainer()
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const auth = container.get(Auth)
+
+  useEffect(() => {
+    auth.listen((user) => setIsAuthenticated(!!user))
+  }, [auth])
 
   useEffect(() => {
     data && ['/auth'].includes(router.pathname) && router.push(data.username)
@@ -58,7 +65,8 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
       value={{
         authenticate,
         unauthenticate,
-        isLoading
+        isLoading,
+        isAuthenticated
       }}
     >
       {children}
