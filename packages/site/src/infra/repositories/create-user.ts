@@ -26,13 +26,9 @@ export class CreateUserRepository {
       }
     `
 
-    console.log(this.makeData(data))
-
     const response = await this.httpClient.request(query, {
       variables: this.makeData(data)
     })
-
-    console.log(response)
 
     return response.createResume
   }

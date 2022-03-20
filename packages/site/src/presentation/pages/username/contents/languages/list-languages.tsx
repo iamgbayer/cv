@@ -5,13 +5,21 @@ import { Text } from 'presentation/components'
 import { getLanguageName, getProficiencyName } from './languages'
 import { Controls } from '../../controls'
 import { Is } from 'domain/vos/is'
+import { ResumeEntity } from '@cv/core'
+
+type Props = {
+  data: ResumeEntity
+  is?: Is
+  hasControls?: boolean
+  hasDivider?: boolean
+}
 
 export const ListLanguages = ({
   data,
   is = Is.NONE,
   hasControls = false,
   hasDivider = false
-}) => {
+}: Props) => {
   const canRenderData = is === Is.NONE && !isEmpty(data.languages)
 
   return (

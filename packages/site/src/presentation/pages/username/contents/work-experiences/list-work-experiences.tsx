@@ -39,7 +39,9 @@ export const ListWorkExperiences = ({
                   <Text variant="body2">
                     {experience.title} at {experience.company}
                   </Text>
-                  <Text variant="body2">{experience.location}</Text>
+                  <Text variant="body2" color="text.secondary">
+                    {experience.location}
+                  </Text>
 
                   {hasControls && (
                     <Controls

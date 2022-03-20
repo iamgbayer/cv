@@ -82,7 +82,6 @@ export const Username = ({ username }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const router = useRouter()
   const { isAuthenticated, unauthenticate } = useAuth()
-  console.log(status, isLoading, data)
   const isMobile = useIsMobile()
   const [list, setList] = useState([
     {
@@ -282,7 +281,9 @@ export const Username = ({ username }: Props) => {
 
           {canRenderWorkExperiences && (
             <Stack>
-              <Text variant="h5">Work experiences</Text>
+              <Text variant="h5" marginBottom={1}>
+                Work experiences
+              </Text>
 
               <ListWorkExperiences data={data} />
             </Stack>
@@ -317,6 +318,12 @@ export const Username = ({ username }: Props) => {
               <ListSkills data={data} />
             </Stack>
           )}
+
+          <Stack marginTop={8}>
+            <Text variant="body2" color="text.secondary">
+              This page is generated on CV
+            </Text>
+          </Stack>
         </Stack>
       </Container>
     </>

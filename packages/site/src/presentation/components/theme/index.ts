@@ -26,6 +26,13 @@ const PRIMARY = {
   dark: '#fff'
 }
 
+const SECONDARY = {
+  main: '#121212',
+  light: '#121212',
+  contrastText: '#fff',
+  dark: '#121212'
+}
+
 const INFO = {
   lighter: '#D0F2FF',
   light: '#74CAFF',
@@ -57,6 +64,7 @@ const ERROR = {
 
 const palette: PaletteOptions = {
   primary: PRIMARY,
+  secondary: SECONDARY,
   info: merge(INFO, { contrastText: '#fff' }),
   error: merge(ERROR, { contrastText: '#fff' }),
   success: merge(SUCCESS, { contrastText: '#fff' }),

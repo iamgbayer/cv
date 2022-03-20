@@ -60,15 +60,16 @@ export const Index = () => {
 
       <Section fixed>
         <Text variant="h1" fontSize={64}>
-          Add audio
+          Build your resume
           <br />
-          to your articles
+          as a website
         </Text>
         <Text mt={5} maxWidth={540}>
           Easiest way to convert your articles into high quality AI-generated
           audio. Allow your users to enjoy your content without looking at the
           screen.
         </Text>
+
         <Box mt={5}>
           <Button
             size="large"
@@ -128,13 +129,10 @@ export const Index = () => {
             <Button
               size="large"
               variant="contained"
+              color="secondary"
               onClick={() => router.push('/auth')}
               sx={{
-                whiteSpace: 'nowrap',
-                color: (theme) =>
-                  theme.palette.getContrastText(theme.palette.common.white),
-                bgcolor: 'common.white',
-                '&:hover': { bgcolor: 'grey.300' }
+                whiteSpace: 'nowrap'
               }}
             >
               Give a try

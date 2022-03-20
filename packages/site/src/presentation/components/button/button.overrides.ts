@@ -40,7 +40,9 @@ export const Button = (theme: Theme): Pick<Components, 'MuiButton'> => ({
       containedPrimary: {
         boxShadow: 'none'
       },
-      containedSecondary: {},
+      containedSecondary: {
+        boxShadow: 'none'
+      },
       outlinedInherit: {
         border: `1px solid ${theme.palette.grey[500_32]}`,
         '&:hover': {

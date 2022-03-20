@@ -6,8 +6,6 @@ export class UpdateResumeRepository {
   public constructor(private httpClient: GraphQLHttpClient) {}
 
   public async execute(data: UpdateResumeInput) {
-    console.log(data)
-
     const query = gql`
       mutation UpdateResume(
         $id: String!
